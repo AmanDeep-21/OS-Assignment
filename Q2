@@ -6,5 +6,6 @@
 
 int main()
 {
+   FILE *rd;
    pthread_t th1;
 }
