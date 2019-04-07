@@ -1,7 +1,31 @@
 #include<stdio.h>
 #include<unistd.h>
 #include<pthread.h>
+#include<sys/wait.h>
+
+float avgVal,minVal,maxVal;
+
+void *findAvg(){
+
+}
+
+void *findMin(){
+
+}
+
+void *findMax(){
+
+}
 
 int main(){
-  pthread_t th1,th2;
+  pthread_t th1,th2,th3;
+  
+  pthread_create(&th1,NULL,findAvg,);
+  pthread_create(&th2,NULL,findMin,);
+  pthread_create(&th3,NULL,findMax,);
+  
+  pthread_join();
+  pthread_join();
+  pthread_join();
+  
 }
