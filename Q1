@@ -19,13 +19,20 @@ void *findMax(){
 
 int main(){
   pthread_t th1,th2,th3;
+  int n;
+  cout<<"Enter number of elements : ";
+  cin>>n;
   
-  pthread_create(&th1,NULL,findAvg,);
-  pthread_create(&th2,NULL,findMin,);
-  pthread_create(&th3,NULL,findMax,);
+  int arr[n];
+  for(int i = 0; i < n; i++)
+      cin>>arr[i];
+      
+  pthread_create(&th1,NULL,findAvg,&arr);
+  pthread_create(&th2,NULL,findMin,&arr);
+  pthread_create(&th3,NULL,findMax,&arr);
   
-  pthread_join();
-  pthread_join();
-  pthread_join();
+  pthread_join(th1,NULL);
+  pthread_join(th2,NULL);
+  pthread_join(th3,NULL);
   
 }
