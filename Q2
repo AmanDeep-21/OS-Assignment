@@ -1,11 +1,51 @@
+/*                                               
+*                                                  Question Description
+*  Here we are having two processes, therefore we are  using two pipes i.e. fd and fd1 to change the case of each letter in the 
+*  entered string. One pipe i.e fd will send the original message from the first process to the second process and the other one i.e fd1 
+*  for sending the modified message from the second to the first process.
+*
+*/
+
+
 #include <stdio.h>
 #include<conio.h>
 #include<unistd.h>
 #include<sys/types.h>
 #include<pthread.h>
+#include<sys/wait.h>
 
-int main()
-{
-   FILE *rd;
-   pthread_t th1;
+int main(){
+   pid_t p;
+   char buff[100];
+   int fd[2],fd1[2];
+   pipe(fd);
+   pipe(fd1);
+   
+   p = fork();
+   
+   if(p == 0){
+      int n;
+      close(fd[0]);
+      
+      printf("Enter a string : ");
+      fgets(buff,100,stdin);
+      n = write(fd[1],buff,strlen(buff)+1);
+      n = read(fd1[0],buff,100);
+      printf("REVERSED MESSAGE : %s",buff);
+      exit(0);
+   }
+   else{
+      int m;
+      close(fd[1]);
+      m = read(fd[0],buff,100);
+      int i;
+      for(i = 0; i < 100; i++){
+         if(buff[i] >= 'a' && buff[i] <= 'z')
+            buff[i] -= 32;
+         else if(buff[i] >= 'A' && buff[i] <= 'Z')
+            buff[i] += 32;
+      }
+      m = write(fd1[1],buff,strlen(buff)+1);
+      wait(NULL);
+   }
 }
