@@ -1,8 +1,18 @@
+/*
+*
+* This program calculates the AVERAGE, MINIMUM and MAXIMUM values from the array using the concepts of thread. All three respective 
+* values are returned to the main and get printed over there.
+*
+*/
+
+
 #include<stdio.h>
 #include<unistd.h>
 #include<pthread.h>
-#include<sys/wait.h>
 #include<stdlib.h>
+#include<sys/wait.h>
+
+int n;
 
 void *findAvg(void *arr){
   int *a = (int *)arr;
@@ -11,7 +21,9 @@ void *findAvg(void *arr){
   for( i = 0; i < n; i++){
     sum += *(a+i);
   }
-  return (sum/n);
+  float avg = sum/n;
+  void *x = NULL;
+  pthread_exit((void *)x);
 }
 
 void *findMin(void *arr){
@@ -22,7 +34,9 @@ void *findMin(void *arr){
     if(*(a+i) < min)
       min  = *(a+i);
   }
-  return min;
+  void *x = NULL;
+  x = &min;
+  pthread_exit((void *)x);
 }
 
 void *findMax(void *arr){
@@ -33,29 +47,35 @@ void *findMax(void *arr){
       if(*(a+i) > max)
         max  = *(a+i);
     }
-    return max;
+    void *x  = NULL;
+    x = &max;
+    pthread_exit((void *)x);
 }
 
+// MAIN METHOD
 int main(){
   pthread_t th1,th2,th3;
-  int n;
   cout<<"Enter number of elements : ";
   scanf("%d",&n);
   
   int arr[n];
   for(int i = 0; i < n; i++)
       scanf("%d",&arr[i]);
-      
-      
-  float avgVal;
-  int minVal,maxVal;
 
-  pthread_create(&th1,NULL,findAvg,arr);
-  pthread_create(&th2,NULL,findMin,arr);
-  pthread_create(&th3,NULL,findMax,arr);
+  pthread_create(&th1,NULL,findAvg,&arr);
+  pthread_create(&th2,NULL,findMin,&arr);
+  pthread_create(&th3,NULL,findMax,&arr);
   
-  pthread_join(th1,NULL);
-  pthread_join(th2,NULL);
-  pthread_join(th3,NULL);
+  void *a = NULL;
+  void *b = NULL;
+  void *c = NULL;
+  
+  pthread_join(th1,&a);
+  pthread_join(th2,&b);
+  pthread_join(th3,&c);
+  
+  printf("Average value of the array is : %f", (float)a);
+  printf("Minimum value of the array is : %d", (int)b);
+  printf("Maximum value of the array is : %d", (int)c);
   exit(0);
 }
