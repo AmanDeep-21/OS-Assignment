@@ -16,15 +16,12 @@ int n;
 
 void *findAvg(void *arr){
   int *a = (int *)arr;
-  float sum = 0;
+  int sum = 0;
   int i;
   for( i = 0; i < n; i++){
     sum += *(a+i);
   }
-  float avg = sum/n;
-  void *x = NULL;
-  x = &avg;
-  pthread_exit((void *)x);
+  pthread_exit((void *)sum);
 }
 
 void *findMin(void *arr){
@@ -35,9 +32,7 @@ void *findMin(void *arr){
     if(*(a+i) < min)
       min  = *(a+i);
   }
-  void *x = NULL;
-  x = &min;
-  pthread_exit((void *)x);
+  pthread_exit((void *)min);
 }
 
 void *findMax(void *arr){
@@ -48,9 +43,7 @@ void *findMax(void *arr){
       if(*(a+i) > max)
         max  = *(a+i);
     }
-    void *x  = NULL;
-    x = &max;
-    pthread_exit((void *)x);
+    pthread_exit((void *)max);
 }
 
 // MAIN METHOD
@@ -75,7 +68,9 @@ int main(){
   pthread_join(th2,&b);
   pthread_join(th3,&c);
   
-  printf("Average value of the array is : %f", (float)a);
+  float avg=floatt(a)/n;
+
+  printf("Average value of the array is : %f", avg);
   printf("Minimum value of the array is : %d", (int)b);
   printf("Maximum value of the array is : %d", (int)c);
   exit(0);
