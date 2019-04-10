@@ -23,6 +23,7 @@ void *findAvg(void *arr){
   }
   float avg = sum/n;
   void *x = NULL;
+  x = &avg;
   pthread_exit((void *)x);
 }
 
@@ -55,11 +56,11 @@ void *findMax(void *arr){
 // MAIN METHOD
 int main(){
   pthread_t th1,th2,th3;
-  cout<<"Enter number of elements : ";
+  printf("Enter number of elements : ");
   scanf("%d",&n);
   
-  int arr[n];
-  for(int i = 0; i < n; i++)
+  int arr[n], i;
+  for(i = 0; i < n; i++)
       scanf("%d",&arr[i]);
 
   pthread_create(&th1,NULL,findAvg,&arr);
